@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;1,6..12,700&family=Quicksand:wght@400;500;600;700&display=swap');
+.site-content {
+    transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+}
+
+p{
+    font-family: 'Nunito Sans', Verdana, sans-serif;
+    font-weight: 400;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Quicksand', Arial, sans-serif;
+    font-weight: 700;
+}
