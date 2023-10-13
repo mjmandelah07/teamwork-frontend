@@ -1,6 +1,6 @@
 import "./App.css";
 import "animate.css";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./utilities/AuthContext";
 import AppContent from "./components/AuthContent/AppContent";
 
 function App() {

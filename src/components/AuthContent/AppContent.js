@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 import PrivateRoute from "../../routes/PrivateRoute";
 import PublicRoute from "../../routes/PublicRoutes";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../utilities/AuthContext";
 
 // Defining the main content of teamwork app in a separate component
 const AppContent = () => {

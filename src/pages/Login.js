@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../utilities/AuthContext";
 import loginImage from "../assests/images/pexels-tranmautritam.jpg";
-import logo from "../assests/images/logo.png"
+import logo from "../assests/images/logo.png";
 import vd from "../assests/videos/8.mp4";
 import "../css/login.css";
 
@@ -11,6 +11,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [responseMessage, setResponseMessage] = useState(false);
   const auth = useAuth();
   const naviagte = useNavigate();
 
@@ -23,22 +25,36 @@ export default function Login() {
     setLoginError("");
   };
 
+  const handleEmailBlur = async () => {
+    if (email && password) {
+      try {
+        const result = await auth.signIn(email, password);
+        console.log(result);
+
+        if (result.message) {
+          setResponseMessage(result.message);
+          setIsButtonDisabled(false);
+          setLoginError("");
+        } else if (result.error) {
+          setIsButtonDisabled(true);
+          setLoginError(result.error);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+      setIsButtonDisabled(true);
+      setLoginError("Please enter both email and password.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const result = await auth.signIn(email, password);
 
-      if (result.userToken) {
-        setEmail(""); // clear email input field
-        setPassword(""); // clear password input field
-        alert(result.message);
-        naviagte("/");
-      } else if (result.error) {
-        setLoginError(result.error);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    setEmail(""); // clear email input field
+    setPassword(""); // clear password input field
+    alert(responseMessage);
+    naviagte("/");
   };
   return (
     <div className="layout-full h-100">
@@ -116,6 +132,7 @@ export default function Login() {
                                         id="email"
                                         value={email}
                                         onChange={handleEmailChange}
+                                        onBlur={handleEmailBlur}
                                         placeholder="Email Address"
                                       />
                                     </div>
@@ -127,13 +144,14 @@ export default function Login() {
                                         Password
                                       </label>
                                       <span className="icon">
-                                        <i class="fa-solid fa-key"></i>
+                                        <i className="fa-solid fa-key"></i>
                                       </span>
                                       <input
                                         type="password"
                                         id="password"
                                         value={password}
                                         onChange={handlePasswordChange}
+                                        onBlur={handleEmailBlur}
                                         className="form-control"
                                         aria-describedby="passwordHelpBlock"
                                         placeholder="Password"
@@ -143,6 +161,7 @@ export default function Login() {
                                       <button
                                         type="submit"
                                         className="btn ellipsis w-100"
+                                        disabled={isButtonDisabled}
                                       >
                                         Log into your account
                                       </button>
